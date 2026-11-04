@@ -5,8 +5,8 @@ function App() {
   return (
     <main className="app">
       <ProfileCard
-        name="Олександр Шевченко"
-        group="ІПЗ-31"
+        name="Пінчук Діана"
+        group="Кн-312"
         technologies={['React Hooks', 'Next.js', 'TypeScript']}
       />
     </main>
