@@ -33,3 +33,33 @@ App
 ```text
 main.jsx
 ```
+
+# ЛР-2: Компоненти й пропси
+
+## Дерево рендерингу
+
+App
+├── Header
+├── Card (Тімлід)
+│ └── Avatar
+└── Card (Команда)
+├── Profile (key="1")
+│ └── Avatar
+├── Profile (key="2")
+│ └── Avatar
+├── Profile (key="3")
+│ └── Avatar
+└── Profile (key="4")
+└── Avatar
+
+## Дерево залежностей модулів
+
+main.jsx
+├── index.css
+└── App.jsx
+├── Header.jsx
+├── Avatar.jsx
+├── Profile.jsx
+│ └── Avatar.jsx
+├── Card.jsx
+└── data.js
