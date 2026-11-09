@@ -36,3 +36,14 @@ flowchart TD
   MenuTable --> MenuCategory["MenuCategory × 3"]
   MenuCategory --> MenuItemRow["MenuItemRow × 4, 3, 3"]
 ```
+
+```mermaid
+flowchart TD
+  App -->|"filterText, inStockOnly"| SearchBar
+  App -->|"menu, filterText, inStockOnly"| MenuTable
+  App --> CafeInfo
+  MenuTable -->|"category"| MenuCategory["MenuCategory × 3"]
+  MenuCategory -->|"item"| MenuItemRow["MenuItemRow × 10"]
+  SearchBar -.->|"onFilterTextChange, onInStockOnlyChange"| App
+  App -.->|"localStorage.setItem"| Storage[("localStorage")]
+```
