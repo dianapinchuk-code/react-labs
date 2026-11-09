@@ -11,11 +11,11 @@ export default function App() {
   return (
     <main className="app">
       <h1>Меню кав'ярні</h1>
-      <SearchBar filterText={filterText} inStockOnly={inStockOnly} />
-      <MenuTable
-        menu={menu}
+      <SearchBar
         filterText={filterText}
         inStockOnly={inStockOnly}
+        onFilterTextChange={setFilterText}
+        onInStockOnlyChange={setInStockOnly}
       />
       <CafeInfo />
     </main>
