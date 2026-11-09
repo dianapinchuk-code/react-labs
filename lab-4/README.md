@@ -39,11 +39,22 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  App -->|"filterText, inStockOnly"| SearchBar
-  App -->|"menu, filterText, inStockOnly"| MenuTable
+  App -->|menu| FilterableMenuTable
   App --> CafeInfo
+  FilterableMenuTable -->|"filterText, inStockOnly"| SearchBar
+  FilterableMenuTable -->|"menu, filterText, inStockOnly"| MenuTable
   MenuTable -->|"category"| MenuCategory["MenuCategory × 3"]
   MenuCategory -->|"item"| MenuItemRow["MenuItemRow × 10"]
-  SearchBar -.->|"onFilterTextChange, onInStockOnlyChange"| App
-  App -.->|"localStorage.setItem"| Storage[("localStorage")]
+  SearchBar -.->|"onFilterTextChange, onInStockOnlyChange, onReset"| FilterableMenuTable
+  FilterableMenuTable -.->|"localStorage.setItem"| Storage[("localStorage")]
 ```
+
+## Колокація стану
+
+- До: App, SearchBar, MenuTable, MenuCategory, MenuItemRow, CafeInfo
+- Після: FilterableMenuTable, SearchBar, MenuTable, MenuCategory, MenuItemRow (компоненти CafeInfo та App більше не перемальовуються під час введення тексту в пошук)
+
+## Колокація стану
+
+- До: App, SearchBar, MenuTable, MenuCategory, MenuItemRow, CafeInfo
+- Після: FilterableMenuTable, SearchBar, MenuTable, MenuCategory, MenuItemRow (компоненти CafeInfo та App більше не перемальовуються під час введення тексту в пошук)
