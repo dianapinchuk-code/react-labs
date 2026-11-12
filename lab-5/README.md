@@ -37,3 +37,4 @@ components render**.
 | Ім’я            | Неконтрольоване                    | У внутрішньому DOM-елементі браузера                 | Ні                                                     |
 | Коментар        | Контрольоване                      | У стані React (`useState` у BookingForm)             | Так                                                    |
 | Гості (§4.5)    | Неконтрольований (для BookingForm) | У власному стані `useState` компонента GuestsStepper | Ні (BookingForm не перемальовується)                   |
+| Гості (§4.6)    | Контрольоване                      | У стані React (`useState` у BookingForm)             | Так                                                    |

@@ -1,30 +1,43 @@
 import GuestsStepper from './GuestsStepper.jsx'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { describeBooking } from '../describeBooking.js'
 
 export default function BookingForm() {
   const [booking, setBooking] = useState(null)
   const [comment, setComment] = useState('')
+  const [guests, setGuests] = useState(2)
+
+  const nameRef = useRef(null)
 
   function handleSubmit(e) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     setBooking(Object.fromEntries(formData))
   }
+
   function handleKeyDown(e) {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       e.currentTarget.requestSubmit()
     }
   }
+
+  function handleReset() {
+    setBooking(null)
+    setComment('')
+    setGuests(2)
+    nameRef.current.focus()
+  }
+
   return (
     <form
       className="booking-form"
       onSubmit={handleSubmit}
       onKeyDown={handleKeyDown}
+      onReset={handleReset}
     >
       <label>
         Ім'я
-        <input name="name" autoComplete="name" required />
+        <input ref={nameRef} name="name" autoComplete="name" required />
       </label>
       <div className="row">
         <label>
@@ -36,11 +49,10 @@ export default function BookingForm() {
           <input type="time" name="time" required />
         </label>
       </div>
-      <GuestsStepper defaultValue={2} />
+      <GuestsStepper value={guests} onChange={setGuests} />
       <label>
         Коментар
         <textarea
-          textarea
           name="comment"
           maxLength={200}
           aria-describedby="comment-counter"
