@@ -1,11 +1,23 @@
-/**
- * Стан, що зберігається в localStorage під ключем `key` у форматі JSON.
- *
- * Використання, як у useState:
- *   const [value, setValue] = useLocalStorage('grind', 'beans')
- *
- * Вимоги — у тестах tests/useLocalStorage.test.jsx.
- */
-export function useLocalStorage(/* key, initialValue */) {
-  throw new Error('Not implemented: useLocalStorage')
+import { useEffect, useState } from 'react'
+
+export function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    try {
+      const stored = localStorage.getItem(key)
+      if (stored === null) return initialValue
+      return JSON.parse(stored)
+    } catch {
+      return initialValue
+    }
+  })
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value))
+    } catch {
+      // Ignore write errors
+    }
+  }, [key, value])
+
+  return [value, setValue]
 }
