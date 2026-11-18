@@ -1,27 +1,19 @@
-import { useState } from 'react'
+import { useShowMore } from '../hooks/useShowMore.js'
 
 export default function ShowMore({ items, step, children }) {
-  const [visibleCount, setVisibleCount] = useState(step)
+  const { visibleItems, hiddenCount, showMore, collapse } = useShowMore(
+    items,
+    step,
+  )
 
-  const visibleItems = items.slice(0, visibleCount)
-  const hiddenCount = Math.max(0, items.length - visibleCount)
-  const isExpanded = visibleCount >= items.length
-
-  function handleToggle() {
-    if (isExpanded) {
-      setVisibleCount(step)
-    } else {
-      setVisibleCount((prev) => Math.min(items.length, prev + step))
-    }
-  }
-
+  const isExpanded = hiddenCount === 0
   const nextCount = Math.min(step, hiddenCount)
 
   return (
     <>
       {children(visibleItems)}
       {items.length > step && (
-        <button type="button" onClick={handleToggle}>
+        <button type="button" onClick={isExpanded ? collapse : showMore}>
           {isExpanded ? 'Згорнути' : `Показати ще ${nextCount}`}
         </button>
       )}
