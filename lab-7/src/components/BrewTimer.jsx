@@ -1,38 +1,10 @@
-import { useEffect, useState } from 'react'
 import TimerView from './TimerView.jsx'
+import { useCountdown } from '../hooks/useCountdown.js'
 
 export default function BrewTimer({ method }) {
-  const [secondsLeft, setSecondsLeft] = useState(method.seconds)
-  const [isRunning, setIsRunning] = useState(false)
-
-  useEffect(() => {
-    if (!isRunning) return
-
-    const intervalId = setInterval(() => {
-      setSecondsLeft((prev) => {
-        if (prev <= 1) {
-          setIsRunning(false)
-          return 0
-        }
-        return prev - 1
-      })
-    }, 1000)
-
-    return () => clearInterval(intervalId)
-  }, [isRunning])
-
-  function handleStart() {
-    setIsRunning(true)
-  }
-
-  function handlePause() {
-    setIsRunning(false)
-  }
-
-  function handleReset() {
-    setIsRunning(false)
-    setSecondsLeft(method.seconds)
-  }
+  const { secondsLeft, isRunning, start, pause, reset } = useCountdown(
+    method.seconds,
+  )
 
   let status = 'idle'
   if (secondsLeft === 0) {
@@ -48,9 +20,9 @@ export default function BrewTimer({ method }) {
       method={method}
       secondsLeft={secondsLeft}
       status={status}
-      onStart={handleStart}
-      onPause={handlePause}
-      onReset={handleReset}
+      onStart={start}
+      onPause={pause}
+      onReset={reset}
     />
   )
 }
