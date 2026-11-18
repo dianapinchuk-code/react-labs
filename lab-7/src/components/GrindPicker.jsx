@@ -1,5 +1,5 @@
 import { useLocalStorage } from '../hooks/useLocalStorage.js'
-import { grinds } from '../data.js'
+import { grindOptions } from '../data.js'
 
 export default function GrindPicker() {
   const [grind, setGrind] = useLocalStorage('grind', 'beans')
@@ -8,7 +8,7 @@ export default function GrindPicker() {
     <fieldset className="grind-picker">
       <legend>Помел</legend>
       <div className="grind-options">
-        {grinds.map((option) => (
+        {grindOptions.map((option) => (
           <label key={option.id}>
             <input
               type="radio"
