@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { formatTime } from '../formatTime.js'
+import TimerView from './TimerView.jsx'
 
 export default function BrewTimer({ method }) {
   const [secondsLeft, setSecondsLeft] = useState(method.seconds)
@@ -7,35 +7,50 @@ export default function BrewTimer({ method }) {
 
   useEffect(() => {
     if (!isRunning) return
-    setInterval(() => {
-      setSecondsLeft(secondsLeft - 1)
+
+    const intervalId = setInterval(() => {
+      setSecondsLeft((prev) => {
+        if (prev <= 1) {
+          setIsRunning(false)
+          return 0
+        }
+        return prev - 1
+      })
     }, 1000)
+
+    return () => clearInterval(intervalId)
   }, [isRunning])
 
+  function handleStart() {
+    setIsRunning(true)
+  }
+
+  function handlePause() {
+    setIsRunning(false)
+  }
+
+  function handleReset() {
+    setIsRunning(false)
+    setSecondsLeft(method.seconds)
+  }
+
+  let status = 'idle'
+  if (secondsLeft === 0) {
+    status = 'done'
+  } else if (isRunning) {
+    status = 'running'
+  } else if (secondsLeft < method.seconds) {
+    status = 'paused'
+  }
+
   return (
-    <article className="brew-timer" aria-labelledby={`${method.id}-title`}>
-      <h3 id={`${method.id}-title`}>{method.name}</h3>
-      <p>{method.recipe}</p>
-      <p className="time" role="timer">
-        {formatTime(secondsLeft)}
-      </p>
-      <div className="timer-controls">
-        <button type="button" onClick={() => setIsRunning(true)}>
-          Старт
-        </button>
-        <button type="button" onClick={() => setIsRunning(false)}>
-          Пауза
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setIsRunning(false)
-            setSecondsLeft(method.seconds)
-          }}
-        >
-          Скинути
-        </button>
-      </div>
-    </article>
+    <TimerView
+      method={method}
+      secondsLeft={secondsLeft}
+      status={status}
+      onStart={handleStart}
+      onPause={handlePause}
+      onReset={handleReset}
+    />
   )
 }
