@@ -1,6 +1,8 @@
+import Button from './Button.jsx'
 import { withAnalytics } from '../hoc/withAnalytics.jsx'
 import { formatTime } from '../formatTime.js'
-import Button from './Button.jsx'
+
+const ActionButton = withAnalytics(Button, 'timer_control')
 
 export default function TimerView({
   method,
@@ -10,39 +12,48 @@ export default function TimerView({
   onPause,
   onReset,
 }) {
-  let primaryLabel = 'Старт'
-  let onPrimary = onStart
   let action = 'start'
+  let label = 'Старт'
+  let onClick = onStart
+
   if (status === 'running') {
-    primaryLabel = 'Пауза'
-    onPrimary = onPause
     action = 'pause'
+    label = 'Пауза'
+    onClick = onPause
   } else if (status === 'paused') {
-    primaryLabel = 'Продовжити'
     action = 'resume'
+    label = 'Продовжити'
+    onClick = onStart
   } else if (status === 'done') {
-    primaryLabel = 'Спочатку'
-    onPrimary = onReset
     action = 'restart'
+    label = 'Спочатку'
+    onClick = onReset
   }
-  const PrimaryButton = withAnalytics(Button, `timer_${action}:${method.id}`)
 
   return (
     <article className="brew-timer" aria-labelledby={`${method.id}-title`}>
       <h3 id={`${method.id}-title`}>{method.name}</h3>
       <p>{method.recipe}</p>
-      <p className="time" role="timer">
+      <p role="timer" className="time">
         {formatTime(secondsLeft)}
       </p>
-      <p className="timer-done" role="status">
-        {status === 'done' ? 'Готово! Час пити каву.' : ''}
-      </p>
+
       <div className="timer-controls">
-        <PrimaryButton onClick={onPrimary}>{primaryLabel}</PrimaryButton>
+        <ActionButton
+          analyticsData={{ method: method.id, action }}
+          onClick={onClick}
+        >
+          {label}
+        </ActionButton>
+
         {(status === 'running' || status === 'paused') && (
           <Button onClick={onReset}>Скинути</Button>
         )}
       </div>
+
+      <p role="status" className="timer-done">
+        {status === 'done' ? 'Готово! Час пити каву.' : ''}
+      </p>
     </article>
   )
 }
