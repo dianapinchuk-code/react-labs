@@ -1,9 +1,9 @@
-import AppHeader from './AppHeader.jsx'
-import NotFound from '../shared/components/NotFound.jsx'
+import { AppHeader } from '../widgets/app-header/index.js'
+import { NotFound } from '../shared/ui/index.js'
 import { useRoute } from './useRoute.js'
-import CatalogPage from '../routes/catalog/CatalogPage.jsx'
-import BeanPage from '../routes/bean/BeanPage.jsx'
-import CartPage from '../routes/cart/CartPage.jsx'
+import { CatalogPage } from '../pages/catalog/index.js'
+import { BeanPage } from '../pages/bean/index.js'
+import { CartPage } from '../pages/cart/index.js'
 
 function renderPage(route) {
   switch (route.name) {
